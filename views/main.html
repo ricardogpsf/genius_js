@@ -4,13 +4,19 @@
 	<title></title>
 
 	<script type="text/javascript" src="../scripts/angular.min.js"></script>
+	<script type="text/javascript" src="../scripts/app.js"></script>
 
 	<link rel="stylesheet" type="text/css" href="../stylesheets/buttons.css">
 </head>
-<body>
-	<span class="btn btn-blue"></span>
-  <span class="btn btn-red"></span>
-  <span class="btn btn-green"></span>
-  <span class="btn btn-yellow"></span>
+<body ng-app="genius" ng-controller="geniusController">
+  <span class="btn btn-blue" ng-click="btnBlue.actionClick()"></span>
+  <span class="btn btn-red" ng-click="btnRed.actionClick()"></span>
+  <span class="btn btn-green" ng-click="btnGreen.actionClick()"></span>
+  <span class="btn btn-yellow" ng-click="btnYellow.actionClick()"></span>
+
+	<br>
+	<span>{{game.statusText}}</span>
+	<br>
+  <button type="button" ng-click="game.init()" ng-show="game.btnInitShow">Iniciar</button>
 </body>
 </html>
