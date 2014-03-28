@@ -6,9 +6,12 @@ var Button = function(color, audioPath, index){
 	self.index = index;
 	
 	var actionClickListeners = [];
+	var element = document.getElementById(color);
 
 	var sound = new Audio(audioPath);
 	sound.load();
+
+	/* public methods */
 
 	/* private methods */
 
@@ -16,8 +19,13 @@ var Button = function(color, audioPath, index){
 		sound.play();
 	};
 
+	self.active = function(){
+		element.className += " btn-active"
+	};
 
-	/* public methods */
+	self.desactive = function(){
+		element.className = element.className.replace("btn-active", "")
+	};
 
 	self.addListenerActionClick = function(listener){
 		actionClickListeners.push(listener);
@@ -76,8 +84,8 @@ var Game = function(songs, $scp){
 
 	var restartGame = function(){
 		self.btnInitShow = true;
-		sequence = [];
 		self.statusText = "Acabou o jogo, voce errou essa. =( Mas acertou " + (sequence.length - 1) + " sequencias.";
+		sequence = [];
 		bufferSequenceOfUser = [];
 	};
 
@@ -100,12 +108,14 @@ var Game = function(songs, $scp){
 				$scp.$apply(function () {
 	        executeSong(value, index, sequence.length - 1) 
 	      });
-			}, index * 1500);
+			}, index * 1000);
 		});
 	};
 
 	var executeSong = function(value, currentIndex, maxIndex){
 		var song = songs[value];
+		song.active();
+		setTimeout(function(){ song.desactive() }, 300);
 		song.executeSound();
 
 		if(maxIndex === currentIndex){
@@ -113,7 +123,7 @@ var Game = function(songs, $scp){
 				$scp.$apply(function () {
 	        updateGameStatus(false);
 	      });
-			}, 1500);
+			}, 1000);
 		}
 	};
 
@@ -128,10 +138,10 @@ var Game = function(songs, $scp){
 angular.module('genius', []).controller('geniusController', function($scope) {
 	var $scp = $scope;
 
-	$scp.btnBlue = new Button('blue', 'http://www.soundjig.com/mp3/soundfx/human/mmmhhh.mp3', 0);
-	$scp.btnRed = new Button('red', 'http://www.soundjig.com/mp3/soundfx/human/no.mp3', 1);
-	$scp.btnGreen = new Button('green', 'http://www.soundjig.com/mp3/soundfx/human/ok.mp3', 2);
-	$scp.btnYellow = new Button('yellow', 'http://www.soundjig.com/mp3/soundfx/human/yes.mp3', 3);
+	$scp.btnBlue = new Button('blue', 'http://www.soundjig.com/mp3/soundfx/human/mmmhhh.mp3?', 0);
+	$scp.btnRed = new Button('red', 'http://www.soundjig.com/mp3/soundfx/human/no.mp3?', 1);
+	$scp.btnGreen = new Button('green', 'http://www.soundjig.com/mp3/soundfx/human/ok.mp3?', 2);
+	$scp.btnYellow = new Button('yellow', 'http://www.soundjig.com/mp3/soundfx/human/yes.mp3?', 3);
 
 	var songs = [$scp.btnBlue, $scp.btnRed, $scp.btnGreen, $scp.btnYellow];
 
